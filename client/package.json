@@ -1,0 +1,69 @@
+{
+  "name": "filmbyjjh-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "assert": "^2.1.0",
+    "axios": "^1.5.1",
+    "browserify-fs": "^1.0.0",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^6.0.3",
+    "classnames": "^2.3.2",
+    "concurrently": "^8.2.1",
+    "cors": "^2.8.5",
+    "crypto-browserify": "^3.12.0",
+    "dgram": "^1.0.1",
+    "dotenv": "^16.3.1",
+    "email-validator": "^2.0.4",
+    "framer-motion": "^10.16.4",
+    "hamburger-react": "^2.5.0",
+    "https-browserify": "^1.0.0",
+    "mock-socket": "^9.3.1",
+    "net": "^1.0.2",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
+    "react": "^18.2.0",
+    "react-app-polyfill": "^3.0.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.11.0",
+    "react-intersection-observer": "^9.5.2",
+    "react-loader-spinner": "^5.4.5",
+    "react-router-dom": "^6.16.0",
+    "react-scripts": "5.0.1",
+    "react-transition-group": "^4.4.5",
+    "sanitize-html": "^2.11.0",
+    "spinners-react": "^1.0.7",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "tls": "^0.0.1",
+    "url": "^0.11.3",
+    "util": "^0.12.5",
+    "web-vitals": "^2.1.4",
+    "yup": "^1.3.2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "scripts": {
+    "start": "react-scripts start"
+  }
+}
