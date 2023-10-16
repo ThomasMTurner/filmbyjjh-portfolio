@@ -10,6 +10,6 @@
     "sanitize-html": "^2.11.0"
   },
   "scripts": {
-    "start": "concurrently \"nodemon mail-sender-server.js\" \"nodemon mail-list-server.js\""
+    "start": "concurrently \"nodemon mail-sender-server.js\" \"nodemon mail-list-server.js\" \"nodemon admin-auth-server.js\" \"nodemon updates-service.js\""
   }
 }

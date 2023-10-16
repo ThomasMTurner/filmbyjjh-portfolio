@@ -75,17 +75,7 @@ export default function SubNav(props) {
     }, [dimensions]);
 
   
-  /*
-<button
-            className='content-sidebar-scrolldown'
-            onMouseEnter={() => setButtonColour('black')}
-            onMouseLeave={() => setButtonColour('white')}
-            onClick={handleScrollUp}
-            >
-            <FaArrowUp className='content-sidebar-arrow' size={40} color={buttonColour} />
-</button>   
 
-  */
 
   return (
     <div className='sub-nav-wrapper'>

@@ -17,7 +17,7 @@ function FormValidationWindow () {
   const handleRateMessage = () => {
     axios.get('http://localhost:3001/send-email')
       .then((response) => {
-        console.log(response);
+        console.log(response.status);
       })
       .catch((error) => {
         if (error.response && error.response.status === 429){
@@ -73,7 +73,6 @@ function ValidationPopUp (props) {
 function TextForm(props) {
   const [isFocused, setIsFocused] = useState(false);
   var inputLength = props.value.length;
-  console.log(isFocused)
   
 
   const handleChange = (event) => {
@@ -307,7 +306,6 @@ function EmailForm () {
         };
         
         if (!nameValid || !emailValid || !subjectValid || !messageValid) {
-          console.log('Some input fields are invalid');
           setIsSubmitting(false);
           return; 
       }
@@ -422,7 +420,7 @@ function SubmitButton (props) {
 
     return(
       <React.Fragment>
-        <input type='submit' value={handleValue()} className={props.isSubmitting ? 'submit-button-1 submit-button-1-submitting': 'submit-button-1'}/>
+        <input type='submit' value={handleValue()} className={props.isSubmitting ? 'submit-button-1 submit-button-reposition-down submit-button-1-submitting': 'submit-button-1 submit-button-reposition-down'}/>
           {props.isSubmitting && 
           <div className='loading-spinner-2'>
             <SpinnerCircular color='white' size={40} thickness={100} />

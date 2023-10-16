@@ -5,14 +5,13 @@ import { ColorRing } from 'react-loader-spinner';
 import React from 'react';
 import NavBar from "./pages/Components/Navbar"
 import Footer from "./pages/Components/Footer";
-import About from './pages/About';
+import Updates from './pages/Updates';
 import Contact from './pages/Contact';
 import Home from './pages/Home';
 import { EventHighlights, PromotionalMaterial, AtlasGym } from './pages/Videography';
 import SubNav from './pages/Components/SubNav';
 import { RiArrowGoBackFill } from 'react-icons/ri';
 
-console.log("made it past the app imports")
 
 //page to capture individual shoots or projects, want back button at top right with title
 const VideoLinksPage = () => {
@@ -178,7 +177,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
-              <Route path="/about" element={<About />} />
+              <Route path="/about" element={<Updates />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/video/*" element={<VideoPage />} />
               <Route path="/video/links/*" element={<VideoLinksPage/>}/>

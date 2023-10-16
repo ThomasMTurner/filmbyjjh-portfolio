@@ -8,13 +8,11 @@ const rateLimit = require('express-rate-limit');
 dotenv.config({ path: './client-details.env' });
 
 
-
-
 //mongoDB model to store mailing list
 
 
 ///connect to the db, need to make sure its set up before this code is run
-mongoose.connect('mongodb://localhost:27017', {
+mongoose.connect('mongodb://localhost:27017/mail-list', {
     dbName:'mail-list',
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -56,7 +54,7 @@ const limiter = rateLimit({
     max:10,
     message: 'Too many requests, please try again later',
     handler: (req, res) => {
-      res.status(429).json({error:'Rate limit exceeded for sending emails, please try again.'})
+      res.status(429).json({error:'Rate limit exceeded for the mailing list, please try again.'})
     }
 })
 
@@ -81,8 +79,6 @@ app.get('/', limiter, (req, res) => {
 ///handle POST request
 
 app.post('/add-to-mailing-list', limiter, (req, res) => {
-    console.log(req.body);
-
     //instantiate transporter to send mail using existing GMAIL STMP server.
     let transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -104,7 +100,6 @@ app.post('/add-to-mailing-list', limiter, (req, res) => {
         email: sanitizeHtml(req.body.email),
         entryDate: currentDate,
     };
-
     // save new entry
     const newEntry = new MailList(entryBody);
 
@@ -115,10 +110,9 @@ app.post('/add-to-mailing-list', limiter, (req, res) => {
             console.error(error);
         }
     }
-
+    
 
     // Handle sending an email with the existing mail list, and the new entry at the top.
-    console.log("Hey we made it to the POST request")
     async function sendMailListEntries() {
         try {
             const mailListEntries = await MailList.find({}).sort({ entryDate: -1 });
@@ -170,7 +164,7 @@ app.post('/add-to-mailing-list', limiter, (req, res) => {
                         <body>
                             <p>Hey, these are your clients on the mailing list up to date.</p>
                             <div class='mail-list-container'>${mainContent}</div>
-                        <body>
+                        </body>
                     </html>
                 `
             };
@@ -188,13 +182,8 @@ app.post('/add-to-mailing-list', limiter, (req, res) => {
     }
 
     saveEntry();
-    console.log("Hey we saved the new entry")
     sendMailListEntries();
-    console.log("Hey we completed everything")
 });
-
-
-
 
 
 

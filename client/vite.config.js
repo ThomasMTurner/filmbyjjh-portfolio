@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import svgr from '@svgr/rollup';
+import svgr from 'vite-plugin-svgr';
 
 // https://vitejs.dev/config/
 export default defineConfig({ 
@@ -10,6 +10,7 @@ export default defineConfig({
   debug: true,
   assetsInclude:['**/*.mp4', '**/*.JPG'],
   plugins: [
+    svgr(),
     react()
   ],
   build: {
@@ -27,9 +28,6 @@ export default defineConfig({
         'http',
         'dns',
       ],
-      plugins: [
-        svgr()
-      ]
       
     },
     esbuild: {

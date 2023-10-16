@@ -50,7 +50,8 @@ function DropDownMenu(props) {
 
         <ul className='test-sub-menu' onMouseLeave={() => (!isMobileNav) && props.setVideoSubMenu(false)}>
           {Object.entries(props.links).map(([key, value], index) => (
-            <motion.div whileHover={{x: 10}}
+            <motion.div
+                        whileHover={{x:5}}
                         transition={{type:"string", duration:0.2, stiffness:300, damping:50}}
                         initial= "hidden"
                         animate= "show"
@@ -81,7 +82,7 @@ function DropDownMenu(props) {
                   transition={{type:"string", duration:0.2, stiffness:300, damping:50}}>
         <ul className='test-sub-menu' onMouseLeave={() => (!isMobileNav) && props.setVideoSubMenu(false)}>
           {Object.entries(props.links).map(([key, value], index) => (
-            <motion.div whileHover={{x:5}} transition={{type:"string", duration:0.2, stiffness:300, damping:50}}>
+            <motion.div transition={{type:"string", duration:0.2, stiffness:300, damping:50}}>
               <li>
                 <NavLink
                   exact

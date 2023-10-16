@@ -2,7 +2,7 @@ import PorfolioReel from './Components/Videos/portfolio-reel.mp4';
 import Header from './Components/Videos/header.mp4';
 import { useState, useEffect } from 'react';
 import { NavLink, useLocation} from 'react-router-dom';
-import {MdOpenInFull, MdOpenInNew} from 'react-icons/md';
+import {MdOpenInNew} from 'react-icons/md';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
@@ -84,7 +84,6 @@ function ContentSidebar(props) {
       setCurrentPage(urlMap[currentPageName]);
     }, [location]);
     
-    console.log("Value of the current page:", currentPage);
   
   
     return (

@@ -55,7 +55,6 @@ address.
 
 */
 app.post('/send-email', limiter,  (req, res) => {
-  console.log(req.body)
   let transporter = nodemailer.createTransport( {
     service:'gmail',
     secure:true,

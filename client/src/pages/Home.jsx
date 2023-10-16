@@ -6,13 +6,15 @@ import JacobBio from './Components/Images/jacob-bio.jpg';
 import PortfolioReel from './Components/Videos/portfolio-reel.mp4';
 import { motion } from 'framer-motion';
 import {InitialLoginContainer} from './Components/InitialLogin';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { UserRoleContext } from '../userRoleContext';
 
 //classname = 'jacob-bio-image'
 export default function Home() {
-    const [isMounted, setIsMounted] = useState(true);
+    //const [isMounted, setIsMounted] = useState(true);
+    const { userRole }  = useContext(UserRoleContext);
 
-    useEffect(() => {
+    /*useEffect(() => {
       //need to persist state of login complete across all pages due to React reconciliation
       const storedState = localStorage.getItem('loginComponentState');
       if (storedState) {
@@ -32,8 +34,9 @@ export default function Home() {
     const handleUnmount = () => {
       setIsMounted(false);
       localStorage.setItem('loginComponentState', JSON.stringify(false));
-    };
+    };*/
 
+    //make sure to pass handleUnmount to initial login if context doesnt work.
 
 
   return (
@@ -48,7 +51,9 @@ export default function Home() {
           </div>
         </div>
         
-        {isMounted && <InitialLoginContainer handleUnmount={handleUnmount}/>}
+
+        
+        {userRole === null && <InitialLoginContainer/>}
         <motion.div initial={{y: -40, opacity:0}} whileInView={{y:20, opacity:1}} transition={{duration:1.2}} viewport={{once:true}}>
           <div className='biography-container' id='bio-container'>
             <div className="bio-container">

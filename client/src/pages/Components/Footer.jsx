@@ -86,6 +86,7 @@ function MailListSubmission () {
       email: formData.email
     }
 
+
     const config = {
       headers: {
         'Content-Type': 'application/json'
@@ -98,8 +99,11 @@ function MailListSubmission () {
       return;
     }
 
+    console.log('made it to the API POST request')
+
     const addToMailListRequest = async () => {
       try {
+        console.log(requestData)
         await axios.post('http://localhost:7060/add-to-mailing-list', requestData, config)
         .then(response => {
           console.log(response);
@@ -133,7 +137,7 @@ function MailListSubmission () {
         <GrMail size={45} color='white' className='gr-mail-icon'/>
         <p>JOIN THE MAILING LIST</p>
       </div>
-      <form onSubmit={() => handleSubmit()} className='mail-list-submission-form'>
+      <form className='mail-list-submission-form'>
         <label className='first-name-submission-label'>
           <input onChange={(event) => handleDataChange(event, 'firstName', dataStateMap, schema)} type="text" className={`mail-list-input ${firstNameValid ? "green-border" : "red-border"} `} placeholder="Enter first name">
           </input>
