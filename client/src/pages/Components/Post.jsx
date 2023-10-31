@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { motion } from 'framer-motion';
+import { BiTimeFive } from 'react-icons/bi';
 
 function PostBody(props) {
     const [showAll, setShowAll] = useState(false);
 
     return(
         <div style={{display:'flex', position:'relative', left:'0.5rem'}}>
-            <p style={{fontFamily:'helvetica', fontSize:'1rem', color:'silver', wordWrap: 'break-word', width:'42rem'}}>{showAll ? props.content : props.content.substring(0, 100) + '...'}<button className='show-post-button' onClick={() => setShowAll(!showAll)}>{showAll ? 'show less' : 'show more'}</button></p>
+            <p style={{fontFamily:'helvetica', fontSize:'1rem', color:'black', wordWrap: 'break-word', width:'55vw'}}>{showAll ? props.content : props.content.substring(0, 100) + '...'}<button className='show-post-button' onClick={() => setShowAll(!showAll)}>{showAll ? 'show less' : 'show more'}</button></p>
         </div>
     )
 }
-
 
 export default function PostPreview(props) {
     const tags = props.data.tags;
@@ -40,7 +40,7 @@ export default function PostPreview(props) {
       
         const daysPassed = Math.floor(difference / (1000 * 60 * 60 * 24));
         if (daysPassed < 7) {
-          return `${daysPassed} day`;
+          return `${daysPassed} days`;
         }
       
         const weeksPassed = Math.floor(difference / (1000 * 60 * 60 * 24 * 7));
@@ -53,10 +53,9 @@ export default function PostPreview(props) {
             <div className='post-preview-container'>
                 <div style={{display:'flex', flexDirection:'column', gap:'0', position:'relative', left:'0.5rem'}}>
                     <p style={{fontFamily:'helvetica', color:'silver', position:'relative'}}>BY <span style={{color:'black', fontWeight:'bold'}}>JACOB HOLLIS.</span></p>
-                    <p style={{fontWeight:'200', fontFamily:'helvetica', fontSize:'0.8rem', color:'darkgreen', position:'relative', bottom:'1rem'}}>Posted {getTimestamp()} ago</p>
+                    <p style={{fontWeight:'200', fontFamily:'helvetica', fontSize:'0.8rem', color:'darkgreen', position:'relative', bottom:'1rem', gap:'0.4rem', display:'flex'}}>Posted {getTimestamp()} ago <BiTimeFive size={15} />   </p>
                 </div>
-                <hr style={{color:'silver', width:'100%'}}></hr>
-                <p style={{fontFamily:'helvetica', fontSize:'1.5rem', color:'black', fontWeight:'bold', position:'relative', left:'0.5rem', textTransform:'uppercase'}}>{title}</p>
+                <p style={{fontFamily:'helvetica', fontSize:'2rem',  color:'black', fontWeight:'bold', position:'relative', left:'0.5rem'}}>{title}</p>
                 <div style={{display:'flex', flexDirection:'row', gap:'0.3rem'}}>
                     {tags.map((tag) => {
                         return (
@@ -64,7 +63,7 @@ export default function PostPreview(props) {
                         )
                     })}
                 </div>
-                <hr style={{color:'silver', width:'100%'}}></hr>
+                <hr style={{width:'100%', borderStyle:'solid', borderColor:'silver', borderWidth:'0.05rem'}}></hr>
                 <PostBody content={content}/>
             </div>
         </motion.div>

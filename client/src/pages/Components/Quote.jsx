@@ -1,22 +1,31 @@
-import {ReactComponent as QuotationMarks} from './Images/quotemarks-for-portfolio.svg';
+import {BiSolidQuoteLeft} from 'react-icons/bi';
+import {BiSolidQuoteRight } from 'react-icons/bi';
 
-export default function Quote(props){
-    return <div className="QuoteBox">
-      <div className='quotemarkswrapper1'>
-        <QuotationMarks className='quotemarksup'/>
+
+export function Quote(props) {
+  return (
+    <div className="QuoteBox">
+      <div className="Quote">
+        <BiSolidQuoteLeft />
+        <p className="QuoteText">{props.quote}</p>
+        <BiSolidQuoteRight />
       </div>
-      <div className="quotewrapper">
-        <h1>
-          {props.quote}
-        </h1>
-      </div>
-      <div className="referencewrapper">
-        <h2>
-            {props.reference} 
-        </h2>
-      </div>
-      <div className='quotemarkswrapper2'>
-        <QuotationMarks className='quotemarksdown'/>
+      <p className="Reference">{props.reference}</p>
+    </div>
+  );
+}
+
+
+export default function QuotesContainer (props) {
+  return (
+    <div className='sub-quotes-container'>
+      <div>
+        {Object.entries(props.quotes).map(([quote, reference]) => {
+          return (
+            <Quote key={quote} quote={quote} reference={reference} />
+          )
+        })}
       </div>
     </div>
-  }
+  )
+}

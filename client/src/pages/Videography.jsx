@@ -37,6 +37,7 @@ function VideoContainer (props) {
       height='600'
       >
       </video>
+
       <div className='video-container-caption'>
           <p>{props.caption}</p>
           <button onMouseEnter = {() => setButtonColour('darkgray')} onMouseLeave = {() => setButtonColour('black')} className='full-opener-button'>
@@ -44,7 +45,10 @@ function VideoContainer (props) {
               <MdOpenInNew size={35} color={buttonColour} className='full-open-button'/>
             </NavLink>
           </button>
+          
        </div>
+      
+      
     </motion.div>
 
   )
@@ -112,7 +116,7 @@ export function AtlasGym () {
 
 
 export function EventHighlights () {
-    const eventHighlightVideos = {"2019 | First event | BBJCorporations": [PorfolioReel, null], "Atlas Gym  | Promotional video | Featuring Rio": [Header, "/video/links/event-highlights/atlas-gym"]};
+    const eventHighlightVideos = {"2019 First event BBJCorporations": [PorfolioReel, null], "Atlas Gym": [Header, "/video/links/event-highlights/atlas-gym"]};
 
     return(
         <div className='event-highlights-wrapper'>

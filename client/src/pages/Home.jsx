@@ -1,43 +1,16 @@
 import './Components/main_styles.css';
 import { NavLink } from 'react-router-dom';
 import MainVideo from './Components/Videos/header.mp4'
-//import Quote from './Components/Quote';
+import QuotesContainer from './Components/Quote';
 import JacobBio from './Components/Images/jacob-bio.jpg';
 import PortfolioReel from './Components/Videos/portfolio-reel.mp4';
 import { motion } from 'framer-motion';
 import {InitialLoginContainer} from './Components/InitialLogin';
 import { useState, useEffect, useContext } from 'react';
-import { UserRoleContext } from '../userRoleContext';
 
 //classname = 'jacob-bio-image'
 export default function Home() {
-    //const [isMounted, setIsMounted] = useState(true);
-    const { userRole }  = useContext(UserRoleContext);
-
-    /*useEffect(() => {
-      //need to persist state of login complete across all pages due to React reconciliation
-      const storedState = localStorage.getItem('loginComponentState');
-      if (storedState) {
-        setIsMounted(JSON.parse(storedState));
-      }
-
-      //clean up state on component unmount so that the state does not persist over current session
-      const handleBeforeUnload = () => {
-        localStorage.removeItem('loginComponentState')
-      };
-      window.addEventListener('beforeunload', handleBeforeUnload);
-      return () => {
-        window.removeEventListener('beforeunload', handleBeforeUnload);
-      }
-    }, []);
-    
-    const handleUnmount = () => {
-      setIsMounted(false);
-      localStorage.setItem('loginComponentState', JSON.stringify(false));
-    };*/
-
-    //make sure to pass handleUnmount to initial login if context doesnt work.
-
+  const quotes = {"Hello this is the first quote": "John Simmonds, MIT", "Hello this is the second quote, hi again.": "John Simmonds, MIT"};
 
   return (
     <div className="Home">
@@ -52,8 +25,6 @@ export default function Home() {
         </div>
         
 
-        
-        {userRole === null && <InitialLoginContainer/>}
         <motion.div initial={{y: -40, opacity:0}} whileInView={{y:20, opacity:1}} transition={{duration:1.2}} viewport={{once:true}}>
           <div className='biography-container' id='bio-container'>
             <div className="bio-container">
@@ -65,7 +36,7 @@ export default function Home() {
           </div>
           </div>
         </motion.div>
-        <hr style={{width:"90%", border:"0.1rem solid silver"}}></hr>
+        <hr style={{width:"90%", border:"0.1rem solid black"}}></hr>
 
         <motion.div initial={{x:-100, opacity:0}} whileInView={{x:0, opacity:1}} transition={{duration:1.2}} viewport={{once:true}}>
           <div className='home-reel-wrapper'>
@@ -73,28 +44,15 @@ export default function Home() {
             <video className='home-reel' controls>
                 <source src={PortfolioReel} type='video/mp4'/>
             </video>
-            <p style={{color:'silver'}}>View my <NavLink to="/video" className='home-video-link'>portfolio</NavLink> to see more.</p>
+            <p style={{color:'silver'}}>View my <NavLink to="/portfolio" className='home-video-link'>portfolio</NavLink> to see more.</p>
           </div>
         </motion.div>
-      
-
         <hr className='quote-container-breaker'></hr>
         <div className="quotes-container">
-          <p className="quote-header">This is what my clients have to say about me<span style={{color:'white'}}>.</span></p>
+          <p className="quote-header">What my clients have to say about me<span style={{color:'white'}}>.</span></p>
+          <QuotesContainer quotes={quotes} />
         </div>
     </div>
   );
 }
 
-/*
-Place the following back in once you figure the issue with importing SVG
-
-<div className="quote-container quote-1" style={{position:'relative', bottom:'8rem'}}>
-<Quote quote="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vehicula tempus massa ut molestie. Curabitur interdum mollis viverra. Vestibulum nunc." reference="Washington DC"/>
-</div>
-<div className="quote-container quote-2" style={{position:'relative', bottom:'25rem'}}>
-<Quote quote="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vehicula tempus massa ut molestie. Curabitur interdum mollis viverra. Vestibulum nunc." reference="Sir Williamson, Kent"/>
-</div>
-
-
-*/

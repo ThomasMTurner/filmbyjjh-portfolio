@@ -134,8 +134,8 @@ function MailListSubmission () {
   return (
     <div className='mail-list-submission-wrapper'>
       <div className='mail-list-title-wrapper'>
-        <GrMail size={45} color='white' className='gr-mail-icon'/>
-        <p>JOIN THE MAILING LIST</p>
+        <GrMail size={40} color='white' className='gr-mail-icon'/>
+        <p >JOIN THE MAILING LIST</p>
       </div>
       <form className='mail-list-submission-form'>
         <label className='first-name-submission-label'>

@@ -1,25 +1,54 @@
 import './Components/main_styles.css';
 import * as yup from 'yup';
 import axios from 'axios';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { UserRoleContext } from '../userRoleContext';
 import {MdCheck} from 'react-icons/md';
 import {AiOutlineClear} from 'react-icons/ai';
 import TagsContainer from './Components/TagComponents';
 import PostPreview from './Components/Post';
+import SearchBarContainer from './Components/SearchBar';
+
+
+const ResultsComponent = (props) => {
+  const results = props.posts.length;
+
+  return (
+    <div style={{ textAlign: 'center' }}>
+      {results > 0 ? (
+        <p style={{ fontFamily: 'helvetica', fontWeight: '200', fontSize: '1.5rem', color: 'green' }}>
+          Excellent! We found {results} results from Jacob that match your search query.
+        </p>
+      ) : (
+        <p style={{ fontFamily: 'helvetica', fontWeight: '200', fontSize: '1.5rem', color: 'red' }}>
+          Sorry, no results found for your search query.
+        </p>
+      )}
+    </div>
+  );
+}
 
 const UserPage = () => {
   const [posts, setPosts] = useState([]);
-
-  const getPosts = async () => {
-    const response = await axios.get('http://localhost:7182/get-posts');
+  //queries can hold sorts, filters and search.
+  //data holds search terms.
+  const [query, setQuery] = useState({'sort': 'most recent', 'filterTags': null, 'search': null, 'dateUpper': null, 'dateLower': null});
+  const getPosts = async (query) => {
+    const response = await axios.get('http://localhost:7182/get-posts', { params: query });
     setPosts(response.data);
   }
 
-  getPosts();
+  getPosts(query);
+
+  //any time change is made to query object, will get new posts matching query
+  useEffect(() => {
+    getPosts(query);
+  }, [query]);
 
   return (
     <div className='user-updates-container'>
+    <SearchBarContainer query = {query} setQuery={setQuery} />
+    <ResultsComponent posts={posts}/>
     {posts.map((data) => {
       return (
         <PostPreview data={data}/>
@@ -35,7 +64,9 @@ const UserPage = () => {
 const EditorPage = () => { 
   const [validationErrors, setValidationErrors] = useState({});
   const [postData, setPostData] = useState({'content': null, 'title': null, 'tags': []});
-  const [buttonColour, setButtonColour] = useState('white');
+  const [buttonColour, setButtonColour] = useState({'clear': 'white', 'add': 'white'});
+
+  console.log(buttonColour);
 
   const [titleValid, setTitleValid] = useState(false);
   const [contentValid, setContentValid] = useState(false);
@@ -50,6 +81,15 @@ const EditorPage = () => {
     tag: yup.string().max(20, "Tag must be less than 20 characters")
   })
 
+  console.log(postData.tags);
+  const clearTags = () => {
+    setPostData(prevData => {
+      return {
+        ...prevData,
+        'tags': []
+      }
+    })
+  }
   const addToTags = () => {
     if (postData.tags.length >= 10) {
       setValidationErrors((prevErrors) => ({
@@ -185,8 +225,8 @@ const EditorPage = () => {
     <div className='editor-updates-container'>
       <div className='editor-create-form-wrapper'>
         <form className='editor-create-form'>
-          <p style={{textAlign:'center', position:'relative', bottom:'1rem', fontSize:'2rem', color:'white', fontFamily:'helvetica', fontWeight:'200'}}>HI JACOB, CREATE A NEW POST.</p>
-          <p style={{color:'white', fontSize:'1.2rem', fontFamily:'helvetica', fontWeight:'bold'}}>Set a title</p>
+          <p style={{textAlign:'center', position:'relative', bottom:'1rem', fontSize:'2rem', color:'black', fontFamily:'helvetica', fontWeight:'200'}}>HI JACOB, CREATE A NEW POST.</p>
+          <p style={{color:'black', fontSize:'1.2rem', fontFamily:'helvetica', fontWeight:'bold'}}>Set a title</p>
           <label className='small-text-form'>
             <input className={`${(titleValid) ? 'green-border' : 'red-border'}`} value={postData.title} type="text" onChange={(event) => handleTitleChange(event)}>
             </input>
@@ -194,7 +234,7 @@ const EditorPage = () => {
               <p style={{color:'red', position:'relative', bottom:'0'}}>{validationErrors['title']}</p>
             )}
           </label>
-          <p style={{color:'white', fontSize:'1.2rem', fontFamily:'helvetica', fontWeight:'bold'}}>Write the post</p>
+          <p style={{color:'black', fontSize:'1.2rem', fontFamily:'helvetica', fontWeight:'bold'}}>Write the post</p>
           <label className='large-text-form'>
             <textarea className={`${(contentValid) ? 'green-border' : 'red-border'}`} value={postData.content} rows="4" columns="50" onChange={(event) => handleContentChange(event)}>
             </textarea>
@@ -203,25 +243,24 @@ const EditorPage = () => {
             )}
           </label>
           <label>
-            <p style={{color:'white', fontSize:'1.2rem', fontFamily:'helvetica', fontWeight:'bold'}}>Set tags</p>
+            <p style={{color:'black', fontSize:'1.2rem', fontFamily:'helvetica', fontWeight:'bold'}}>Set tags</p>
             <div style={{display:'flex', flexDirection:'row', alignItems:'center', gap: '1rem'}}>
               <input  className={`tag-input ${(tagValid) ? 'green-border' : 'red-border'}`} value={currentTag} onChange={(event) => handleTagChange(event)} type="text">
               </input>
-              <button onMouseEnter={() => setButtonColour('green')} onMouseLeave={() => setButtonColour('white')}style={{all:'unset', position:'relative', bottom:'1rem'}} type='button' onClick={() => addToTags()}><MdCheck color={buttonColour} size={30}/></button>
-              <button style = {{all: 'unset', position:'relative', bottom:'1rem'}} type='button' onClick={() => clearTags()}><AiOutlineClear color='white' size={30}/></button>
+              <button onMouseEnter={() => setButtonColour((prevData) => ({ ...prevData, 'add': 'green' }))} onMouseLeave={() => setButtonColour((prevData) => ({ ...prevData, 'add': 'white' }))}style={{all:'unset', position:'relative', bottom:'1rem'}} type='button' onClick={() => addToTags()}><MdCheck color={buttonColour['add']} size={30}/></button>
+              <button style = {{all: 'unset', position:'relative', bottom:'1rem'}} onMouseEnter={() => setButtonColour((prevData) => ({ ...prevData, 'clear': 'red' }))} onMouseLeave={() => setButtonColour((prevData) => ({ ...prevData, 'clear': 'white' }))} type='button' onClick={() => clearTags()}><AiOutlineClear color={buttonColour['clear']} size={30}/></button>
             </div>
             <p style={{color:'red', fontSize:'0.8rem', position:'relative', bottom: '1.2rem'}} >{validationErrors['tag']}</p>
           </label>
         </form>
-        <TagsContainer setValidationErrors = {setValidationErrors} setPostData = {setPostData} tags={postData.tags}/>
-        <button onClick={() => createPost()} type="button" className='submit-button-1 submit-button-reposition-up'>CREATE</button>
+        <TagsContainer tagsPerRow={6} isTag={true} setValidationErrors = {setValidationErrors} setPostData = {setPostData} tags={postData.tags}/>
+        <button onClick={() => createPost()} type="button" className='post-button'>CREATE</button>
       </div>
     </div>
   )}
 
 export default function Updates () {
-  const { userRole }  = useContext(UserRoleContext);
-
+  const { userRole } = useContext(UserRoleContext);
   if (userRole == 'base'){
     return <UserPage />
   }

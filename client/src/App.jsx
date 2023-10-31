@@ -1,5 +1,5 @@
-import { useLocation, useNavigate, Route, Outlet, BrowserRouter as Router, Routes} from 'react-router-dom';
-import { useEffect, useState, Suspense } from 'react';
+import { useLocation, useNavigate, Route, Outlet, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { useEffect, useState, Suspense, useContext } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { ColorRing } from 'react-loader-spinner';
 import React from 'react';
@@ -8,43 +8,24 @@ import Footer from "./pages/Components/Footer";
 import Updates from './pages/Updates';
 import Contact from './pages/Contact';
 import Home from './pages/Home';
-import { EventHighlights, PromotionalMaterial, AtlasGym } from './pages/Videography';
+import { EventHighlights, PromotionalMaterial } from './pages/Videography';
 import SubNav from './pages/Components/SubNav';
-import { RiArrowGoBackFill } from 'react-icons/ri';
+import Portfolio from './pages/Portfolio';
+import { InitialLoginContainer } from './pages/Components/InitialLogin';
+import { UserRoleContext } from './userRoleContext';
 
 
 //page to capture individual shoots or projects, want back button at top right with title
-const VideoLinksPage = () => {
-  const [buttonColour, setButtonColour] = useState('black');
-  const navigate = useNavigate();
-
-  const handleBackClick = () => {
-    navigate('/video');
-  }
-
-  return (
-    <div className='video-links-page-wrapper'>
-      <div style={{display:"flex", flexDirection:"row", justifyContent:"center", alignItems:'center', position:'relative', top:'20%'}}>
-        <button onClick={() => handleBackClick()} onMouseEnter={() => setButtonColour('gray')} onMouseLeave={() => setButtonColour('black')} className='video-links-back-button'>
-          <RiArrowGoBackFill size={40} color={buttonColour}/>
-        </button>
-        <p>BIG BOY TITLE</p>
-      </div>
-      <div className='page-content-wrapper'>
-        <Routes>
-          <Route path="/event-highlights/atlas-gym" element={<AtlasGym />} />
-        </Routes>
-      </div>
-    </div>
-  )
-}
 const VideoPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  console.log(location.pathname);
+
   useEffect(() => {
-    if (location.pathname == '/video'){
-      navigate('/video/event-highlights');
+    if (location.pathname == '/portfolio/video'){
+      console.log("changes are not being applied properly")
+      navigate('/portfolio/video/event-highlights');
     }
   }, [navigate, location]);
 
@@ -70,9 +51,6 @@ const VideoPage = () => {
     </div>
   );
 };
-
-
-
 
 const PhotoPage = () => {
     const navigate = useNavigate();
@@ -122,9 +100,25 @@ const LoadingPage = () => {
 
 const Layout = () => {
   const [showFooter, setShowFooter] = useState(false);
+  const { userRole } = useContext(UserRoleContext);
+  const [showBlur, setShowBlur] = useState(true);
+
+  const blurStyle = showBlur ? { filter: 'blur(4px)' } : {};
+
+  useEffect(() => {
+    const handleBlur = () => {
+      if (userRole != null){
+        setShowBlur(false);
+    }
+  };
+
+    handleBlur();
+    
+  }, [userRole]);
+
   
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll= () => {
       const content = document.getElementById('content');
       if (content) {
         const scrollOffset = content.offsetHeight - document.documentElement.clientHeight;
@@ -148,22 +142,24 @@ const Layout = () => {
            timeout={300}
            classNames='nav-transition'
            unmountOnExit>
-            <NavBar id='nav' />
+            <NavBar id='nav' blurStyle={blurStyle}/>
           </CSSTransition>
           <div id="content">
-            <Outlet/>
+            {userRole == null && <InitialLoginContainer/>}
+            <div style={blurStyle}>
+              <Outlet />
+
+            </div>
           </div>
-          <Footer/>
+          <div style={blurStyle}>
+            <Footer/>
+          </div>
         </div>
       );
     };
     
 /*
 Notes for later:
-
-(1) Want to set up the projects and collections subpages for EACH link with a back button which will use
-React useNavigate to go back to the initial video page (I think this is navigate(-2))
-
 
 
 */
@@ -177,11 +173,11 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
-              <Route path="/about" element={<Updates />} />
+              <Route path="/updates" element={<Updates />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/video/*" element={<VideoPage />} />
-              <Route path="/video/links/*" element={<VideoLinksPage/>}/>
-              <Route path="/photo/*" element={<PhotoPage />} />
+              <Route path="/portfolio" element={<Portfolio/>} />
+                <Route path="/portfolio/video/*" element={<VideoPage />} />
+                <Route path="/portfolio/photo/*" element={<PhotoPage />} />
             </Route>
           </Routes>
         </Suspense>

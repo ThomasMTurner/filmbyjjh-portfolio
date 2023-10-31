@@ -105,7 +105,7 @@ function DropDownMenu(props) {
 
 
 
-export default function NavBar() {
+export default function NavBar(props) {
     const [isToggled, setToggled] = useState(false);
     const [isMobileNav, setMobileNav] = useState(false);
     const [VideoSubMenu, setVideoSubMenu] = useState(false);
@@ -144,8 +144,7 @@ export default function NavBar() {
     }
     
 
-
-    
+ 
     const logoClasses = classNames({
       'main-logo-wrapper': true,
       'logo-reposition': isMobileNav
@@ -172,7 +171,7 @@ export default function NavBar() {
     return ( 
 
     <div className="app-wrapper">
-      <nav className='Navigation'>
+      <nav className='Navigation' style={props.blurStyle}>
         <div className={logoClasses}>
           <img src={JacobLogo} className="main-logo" alt="Jacob's Logo"/>
         </div>
@@ -186,24 +185,20 @@ export default function NavBar() {
                   <NavLink exact to="/" className={({ isActive }) => (isActive ? 'active-nav-item' : 'nav-item')}>Home</NavLink>
                 </li>
                 <li>
-                  <NavLink exact to="/about" className={({ isActive }) => (isActive ? 'active-nav-item' : 'nav-item')}>Updates</NavLink>
+                  <NavLink exact to="/updates" className={({ isActive }) => (isActive ? 'active-nav-item' : 'nav-item')}>Updates</NavLink>
                 </li>
                 <li onMouseEnter={() => (!isMobileNav) && setVideoSubMenu(true)} onMouseLeave ={() => (!isMobileNav) && setVideoSubMenu(false)}>
-                  <NavLink exact to="/video" className={({ isActive }) => (isActive ? 'active-nav-item' : 'nav-item')}>Video</NavLink>
+                  <NavLink exact to="/portfolio" className={({ isActive }) => (isActive ? 'active-nav-item' : 'nav-item')}>Portfolio</NavLink>
                   {isMobileNav && <button className='drop-down-mobile-button' onClick={() => handleMobileDropDownClick()}> {dropDownOpener} </button>}
                   {VideoSubMenu && (
                     <DropDownMenu 
                       VideoSubMenu={VideoSubMenu} 
                       setVideoSubMenu={setVideoSubMenu}
                       isMobileNav={isMobileNav}
-                      links={{ 'Event highlights': '/video/event-highlights', 'Promotional material': '/video/promotional-material', 'Drone footage': '/video/my-first-highlight-reel' }}
+                      links={{ 'Home': '/portfolio', 'Videography': '/portfolio/video', 'Photography': '/portfolio/photo' }}
                     />
               
   )}
-                </li>
-                <li>
-                  <NavLink exact to="/photo" className={({ isActive }) => (isActive ? 'active-nav-item' : 'nav-item')}>Photo</NavLink>
-                  {isMobileNav && <button className='drop-down-mobile-button'> + </button>}
                 </li>
                 <li>
                   <NavLink exact to="/contact" className={({ isActive }) => (isActive ? 'active-nav-item' : 'nav-item')}>Contact</NavLink>

@@ -77,12 +77,63 @@ app.post('/create-post', (req, res) => {
 })
 
 
+app.get('/get-tags', (req ,res) => {
+    //want to get every tag and count their instances.
+    //check through every document, add tag to map if doesn't exist
+    // add count to tag in map if already exists.
+    const tagsCountMap = {}
+
+    updates.find({tags : {$exists: true}})
+    .then((results) => {
+        for (let i = 0; i < results.length; i ++){
+            for (let j = 0; j < results[i].tags.length; j++){
+                currentTag = results[i].tags[j]
+                if (currentTag in tagsCountMap){
+                    tagsCountMap[currentTag] += 1
+                }
+                else {
+                    tagsCountMap[currentTag] = 1
+                }
+            }
+        }
+
+    res.status(200).json(tagsCountMap);
+    })
+    .catch((error) => {
+        console.error(error);
+        res.status(500).json({message: 'Error retrieving tags'});
+    })
+
+})
 
 //GET request should deal with retrieving from db posts in order of most recent
 app.get('/get-posts', (req, res) => {
+    const sort = req.query.sort;
+    const filterTags = req.query.filterTags;
+    const search = req.query.search;
+    const dateLower = req.query.dateLower;
+    const dateUpper = req.query.dateUpper;
+
+    //now we have some list of tags we want to match our search against
+    let sortMap = {'oldest': 1, 'most recent': -1};
+    
+    let query = {};
+
+    if (search) {
+        query.title = {$regex: search, $options: 'i'};
+    }
+    if (filterTags){
+        query.tags = { $in: filterTags };
+    }
+
+    if (dateLower && dateUpper){
+        query.postDate = {$gte: dateLower, $lte: dateUpper};
+    }
+    
+
     updates
-    .find()
-    .sort({postDate: -1})
+    .find(query)
+    .sort({postDate: sortMap[sort]})
     .then((data) => {
         res.status(200).json(data);
     })
@@ -90,4 +141,7 @@ app.get('/get-posts', (req, res) => {
         console.error(error);
         res.status(500).json({message: 'Error retrieving posts'});
     })
+
+    
+    
 });
