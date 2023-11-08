@@ -26,8 +26,6 @@ app.get('/get-token', (req, res) => {
     const authCode = crypto.randomBytes(Math.ceil(16/2)).toString('hex');
     //sign in json web token
     const token = jwt.sign({authCode: authCode}, secretKey, {expiresIn:"1h"});
-    //store in server memory
-    
     //send the token by email to the client
     let transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -37,6 +35,7 @@ app.get('/get-token', (req, res) => {
             pass: clientAppPass
         }
     });
+
 
     //format email to send including the token
     let mailOptions = {
@@ -113,7 +112,6 @@ app.post('/validate', (req, res) => {
         res.status(401).send('Invalid token')
     }
 
-        
 
 });
 

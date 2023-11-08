@@ -123,6 +123,7 @@ app.get('/get-posts', (req, res) => {
         query.title = {$regex: search, $options: 'i'};
     }
     if (filterTags){
+        console.log(filterTags);
         query.tags = { $in: filterTags };
     }
 

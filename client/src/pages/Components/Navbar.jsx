@@ -195,7 +195,7 @@ export default function NavBar(props) {
                       VideoSubMenu={VideoSubMenu} 
                       setVideoSubMenu={setVideoSubMenu}
                       isMobileNav={isMobileNav}
-                      links={{ 'Home': '/portfolio', 'Videography': '/portfolio/video', 'Photography': '/portfolio/photo' }}
+                      links={{ 'Videography': '/portfolio/video', 'Photography': '/portfolio/photo' }}
                     />
               
   )}

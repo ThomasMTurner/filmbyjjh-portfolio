@@ -63,7 +63,7 @@ export default function TagsContainer(props) {
       rows.push(
         <div key={i} style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
           {!props.isFilterTag && rowTags.map((tag, index) => (
-            <Tag key={index} index={index} tag={tag} tags={props.tags} />
+            <Tag setValidationErrors = {props.setValidationErrors} setPostData = {props.setPostData} key={index} index={index} tag={tag} tags={props.tags} />
           ))}
           {props.isFilterTag && rowTags.map(([tag, count], index) => (
             <FilterTag setActiveTags = {props.setActiveTags} key={index} index={index} tag={tag} count={count} tags={props.tags} />

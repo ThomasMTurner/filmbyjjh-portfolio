@@ -52,8 +52,9 @@ app.listen(port, () => {
 - This is then sent using the nodemailer library to the dedicated SMTP server which is then sent to the client's email
 address.
 
-
 */
+
+
 app.post('/send-email', limiter,  (req, res) => {
   let transporter = nodemailer.createTransport( {
     service:'gmail',

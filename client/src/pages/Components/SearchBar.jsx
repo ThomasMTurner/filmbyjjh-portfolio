@@ -100,7 +100,7 @@ const FilterDateSubMenu = (props) => {
 const FilterTagSubMenu = (props) => {
     //consists of a map of tags to their count (instances in all posts)
     const [filterTags, setFilterTags] = useState({});
-    const [activeTags, setActiveTags] = useState([]);
+    const [activeTags, setActiveTags] = useState(['']);
 
 
     //make GET request to '/get-tags', then put this response into a list

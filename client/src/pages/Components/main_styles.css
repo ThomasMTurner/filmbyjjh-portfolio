@@ -1482,10 +1482,10 @@
 .photo-page-wrapper{
     overflow:hidden;
     width:100%;
-    height:150rem;
-    flex-direction:row;
+    height:160rem;
+    flex-direction:row-reverse;
     justify-content:space-between;
-    background-color:silver;
+    background-color:whitesmoke;
 
 }
 
@@ -1506,7 +1506,7 @@
     width: min-content;
     gap: 1rem;
     position:relative;
-    bottom:40rem;
+    bottom:50rem;
     border-style:solid;
     border-radius:0.5rem;
     background-color:whitesmoke;
@@ -1676,12 +1676,13 @@
 }
 
 
-.video-container{
+.content-container{
     display:flex;
     flex-direction:column;
     text-align:center;
     gap:5rem;
 }
+
 
 .video-container-1{
     all:initial;
@@ -1946,11 +1947,12 @@
 }
 
 .sub-nav-desc{
+    position:relative;
+    right:1rem;
     font-size: 1.2rem;
     font-weight: 200;
-    color:silver; 
+    color:black; 
     width:15rem;
-    right:1rem;
 }
 
 .chevron-down{

@@ -8,11 +8,14 @@ import Footer from "./pages/Components/Footer";
 import Updates from './pages/Updates';
 import Contact from './pages/Contact';
 import Home from './pages/Home';
-import { EventHighlights, PromotionalMaterial } from './pages/Videography';
+import ContentSidebar from './pages/Videography';
 import SubNav from './pages/Components/SubNav';
 import Portfolio from './pages/Portfolio';
 import { InitialLoginContainer } from './pages/Components/InitialLogin';
 import { UserRoleContext } from './userRoleContext';
+import Header from './pages/Components/Videos/header.mp4';
+import PorfolioReel from './pages/Components/Videos/portfolio-reel.mp4';
+
 
 
 //page to capture individual shoots or projects, want back button at top right with title
@@ -20,11 +23,8 @@ const VideoPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(location.pathname);
-
   useEffect(() => {
     if (location.pathname == '/portfolio/video'){
-      console.log("changes are not being applied properly")
       navigate('/portfolio/video/event-highlights');
     }
   }, [navigate, location]);
@@ -33,19 +33,19 @@ const VideoPage = () => {
     <div className='video-page-wrapper'>
       <div className='sideline-content'> 
         <SubNav
+          subNavDescription="Welcome to the videography page, you can view all of my highlighted video projects on the right by scrolling. You can also look into each project by clicking on the button inside the caption. "
           title="Videography Content"
           parentLink="video"
           links={{"Event highlights": "event-highlights", "Promotional material": "promotional-material", "Drone footage": "my-first-highlight-reel" }}
-          subLinks={{'event highlights': {"Shoots": {"Atlas Gym": "/video/links/atlas-gym"}, "Individual projects":{}}}}
           className='subnav'
+          initialPage='event highlights'
         />
-        <p className='sideline-content-text'>Welcome to the videography page, you can view all of my highlighted video projects on the right by scrolling. You can also look into each project by clicking on the button inside the caption. </p>
       </div>
       
       <div className='page-content-wrapper'>
         <Routes>
-          <Route path="/event-highlights" element={<EventHighlights />} />
-          <Route path="/promotional-material" element={<PromotionalMaterial />} />
+          <Route path="/promotional-material" element={<ContentSidebar contentTitle ="Video content I have created in order to promote brands, key examples include popular gyms, showcase events and so on" videos={{"2019 | First event | BBJCorporations": [Header, null]}} />} />
+          <Route path="/event-highlights" element={<ContentSidebar contentTitle="Video content I have created in order to promote brands, key examples include popular gyms, showcase events and so on" videos={{"2019 First event BBJCorporations": [PorfolioReel, null], "Atlas Gym": [Header, "/video/links/event-highlights/atlas-gym"]}} />} />
         </Routes>
       </div>
     </div>
@@ -57,21 +57,31 @@ const PhotoPage = () => {
     const location = useLocation();
   
     useEffect(() => {
-      if (location.pathname == '/video'){
-        navigate('/video/event-highlights');
+      if (location.pathname == '/portfolio/photo'){
+        navigate('/portfolio/photo/wedding-photography');
       }
     }, [navigate, location]);
   
     return (
       <div className='photo-page-wrapper'>
-        <SubNav
-          title="Photography Content"
-          parentLink="photo"
-          links={{}}
-        />
-        <Routes>
-          <Route path="/" element={<EventHighlights />} />
-        </Routes>
+        <div className='sideline-content'>
+          <SubNav
+            subNavDescription="Welcome to the photography page, you can view all of my photos on the right by scrolling. You can also look into each photo by clicking on the button inside the caption. "
+            style={{
+              position: 'relative',
+              bottom:"40rem"
+            }}
+            title="Photography Content"
+            parentLink="photo"
+            links={{"Wedding photography": "wedding-photography"}}
+            initialPage = "wedding photography"
+          />
+        </div>
+        <div className='page-content-wrapper'>
+          <Routes>
+            <Route path="/wedding-photography" element={<ContentSidebar contentTitle="Selection of photographs taken for weddings and wedding related events, also includes stags and hens." photos={{}}/>} />
+          </Routes>
+        </div>
       </div>
     );
   

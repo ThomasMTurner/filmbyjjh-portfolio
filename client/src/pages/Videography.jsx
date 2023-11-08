@@ -35,7 +35,7 @@ function VideoContainer (props) {
       controls
       width='600'
       height='600'
-      >
+    >
       </video>
 
       <div className='video-container-caption'>
@@ -54,9 +54,19 @@ function VideoContainer (props) {
   )
 }
 
+function PhotosContainer(props){
+  return (
+    <div className='content-container'>
+      {props.photos && Object.entries(props.photos).map(([caption, source]) => (
+        <img size={'300'} src={source} alt={caption} key={caption} />
+      ))}
+    </div>
+  )
+}
+
 function VideosContainer(props) {
     return (
-      <div className="video-container">
+      <div className="content-container">
         {props.videos &&
           Object.entries(props.videos).map(([caption, source]) => (
             <VideoContainer
@@ -73,22 +83,26 @@ function VideosContainer(props) {
   
   
 
-function ContentSidebar(props) {
-    const [currentPage, setCurrentPage] = useState('');
+export default function ContentSidebar(props) {
+    const [currentPage, setCurrentPage] = useState(null);
+    const displaysVideos = Boolean(props.videos || false);
+    //const displaysPhotos = (!displaysVideos);
+    
     const urlMap = {
-      'event-highlights': 'Event highlights - a stellar collection of reels from my events',
-      'promotional-material': 'Promotional material - increasing the noteriety of client brands',
-      'my-first-highlight-reel': 'MY FIRST HIGHLIGHT REEL'
+      'event-highlights': 'Event highlights, a stellar collection of reels from my events',
+      'promotional-material': 'Promotional material, increasing the noteriety of client brands',
+      'wedding-photography': 'Wedding photography, elegant portraits of you and your loved ones on this special day'
     }
-
+    
     const location = useLocation();
   
     useEffect(() => {
       const currentPageName = window.location.pathname.split('/').pop();
+      if (currentPageName != "photo"){
       setCurrentPage(urlMap[currentPageName]);
+      }
     }, [location]);
     
-  
   
     return (
       <div className='content-sidebar'>
@@ -96,7 +110,8 @@ function ContentSidebar(props) {
         <div className='content-sidebar-title'> 
           <h1 style={{color:'black', width:'40rem', fontFamily:'helvetica', fontWeight:'100', fontSize:'1.2rem'}}>{props.contentTitle}</h1>
         </div>
-        <VideosContainer videos={props.videos} />
+        {displaysVideos ? <VideosContainer videos={props.videos} /> : <PhotosContainer photos={props.photos} />}
+  
       </div>
     );
   }
@@ -135,3 +150,4 @@ export function PromotionalMaterial () {
         </div>
     );
 }
+

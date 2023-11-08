@@ -109,7 +109,7 @@ app.post('/add-to-mailing-list', limiter, (req, res) => {
         } catch (error) {
             console.error(error);
         }
-    }
+    };
     
 
     // Handle sending an email with the existing mail list, and the new entry at the top.
@@ -131,7 +131,7 @@ app.post('/add-to-mailing-list', limiter, (req, res) => {
                 }
             }).join('');
 
-            let mailOptions = {
+            let updateMailOptions = {
                 from: clientEmailUser,
                 to: 'thomasturner090205@gmail.com',
                 subject: 'Hey Jacob, there has been an update to your mailing list',
@@ -169,21 +169,42 @@ app.post('/add-to-mailing-list', limiter, (req, res) => {
                 `
             };
 
-            transporter.sendMail(mailOptions, function (error, info) {
+            transporter.sendMail(updateMailOptions, function (error, info) {
                 if (error) {
                     res.json({ status: 'error' });
                 } else {
                     res.json({ status: 'success' });
                 }
             });
-        } catch (error) {
+        }
+        catch (error) {
             console.error(error);
         }
-    }
+    };
 
     saveEntry();
     sendMailListEntries();
+    
+    let confirmationMailOptions = {
+        from: clientEmailUser,
+        to: entryBody.email,
+        subject: 'You have been added to the mailing list',
+        text: "Welcome to the mailing list for film productions by Jacob Hollis, further emails will be sent directly to you."
+    };
+
+    transporter.sendMail(confirmationMailOptions, (error, info) => {
+        if (error) {
+            res.json({ status: 'error' });
+        } else {
+            res.json({ status: 'success' });
+        };
+    });
+
 });
+
+
+
+    
 
 
 

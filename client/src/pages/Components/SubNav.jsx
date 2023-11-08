@@ -11,32 +11,29 @@ export default function SubNav(props) {
   const [isMobileNav, setMobileNav] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(true);
   const [menuOpenerSymbol, setMenuOpenerSymbol] = useState('-');
-  const [currentPage, setCurrentPage] = useState('');
+  const [currentPage, setCurrentPage] = useState(props.initialPage);
   const location = useLocation();
-  const [chevronLinks, setChevronLinks] = useState(props.subLinks["event highlights"]);
 
   console.log(currentPage);
-
-
-  useEffect(() => {
-    const currentPageName = window.location.pathname.split('/').pop();
-    console.log(currentPageName);
-    setCurrentPage(urlMap[currentPageName]);
-    const chevronLinksValue = props.subLinks[urlMap[currentPageName]];
-    setChevronLinks(chevronLinksValue || {"Shoots": {}, "Individual projects": {}});
-  }, [location])
-
-  
 
   const urlMap = {
       'event-highlights': 'event highlights',
       'promotional-material': 'promotional material',
-      'my-first-highlight-reel': 'drone footage'
+      'my-first-highlight-reel': 'drone footage',
+      'wedding-photography': 'wedding photography'
     }
+
+
+  useEffect(() => {
+    const currentPageName = location.pathname.split('/').pop();
+    if (currentPageName != "video" && currentPageName != "photo"){
+    console.log(currentPageName);
+    setCurrentPage(urlMap[currentPageName]);
+    }
+  }, [location]);
+
   
-
-
-
+  
   const handleMenuOpenerClick = () => {
     setMobileMenuOpen(!mobileMenuOpen);
     if (menuOpenerSymbol == '+'){
@@ -107,19 +104,19 @@ export default function SubNav(props) {
         
         ))}
         </div>
-        <hr style={{display:"block",  width:"90%", position:'relative', right:"1rem",  border:"0.05rem solid black"}}/>
-        <p className='sub-nav-desc'>Welcome to the videography page, click the button inside the caption to view the projects in full, alternatively, navigate through the links below.</p>
-        <p style={{fontSize: '2rem', fontWeight: 'bold', color:'silver', width:'15rem'}}> On this page: <span style={{color:'black'}}>{currentPage}</span> </p>
-        <hr style={{display:"block",  width:"90%", position:'relative', bottom:"2rem", right:"1rem",   border:"0.05rem solid black"}}/>
-        <div className='sub-nav-sub-menu-wrapper'>
-          <ChevronMenu title={"Shoots"} links={chevronLinks["Shoots"]}/>
-          <ChevronMenu title={"Individual projects"} links={chevronLinks["Individual projects"]} />
-        </div>
+        <hr style={{display:"block",  width:"112%", position:'relative', right:'2.5rem',border:"0.07rem solid gray"}}/>
+        <p className='sub-nav-desc'>{props.subNavDescription}</p>
       </ul>
     </div>
   );
 }
 
+//<p style={{fontSize: '2rem', fontWeight: 'bold', color:'silver', width:'15rem'}}> On this page: <span style={{color:'black'}}>{currentPage}</span> </p>
+//<hr style={{display:"block",  width:"90%", position:'relative', bottom:"2rem", right:"1rem",   border:"0.05rem solid black"}}/><div className='sub-nav-sub-menu-wrapper'><ChevronMenu title={"Shoots"} links={chevronLinks["Shoots"]}/>
+//<ChevronMenu title={"Individual projects"} links={chevronLinks["Individual projects"]} />
+//</div>
+//</ul>
+//</div>
 
 
 function ChevronMenu(props){
