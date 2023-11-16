@@ -13,6 +13,7 @@
     "all": "",
     "concurrently": "^8.2.1",
     "date-fns": "^2.30.0",
+    "evergreen-ui": "^7.1.9",
     "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.0.1",
     "react": "^18.2.0",

@@ -14,40 +14,53 @@ import Portfolio from './pages/Portfolio';
 import { InitialLoginContainer } from './pages/Components/InitialLogin';
 import { UserRoleContext } from './userRoleContext';
 import Header from './pages/Components/Videos/header.mp4';
-import PorfolioReel from './pages/Components/Videos/portfolio-reel.mp4';
+import PortfolioReel from './pages/Components/Videos/portfolio-reel.mp4';
 
 
 
 //page to capture individual shoots or projects, want back button at top right with title
+
+/*
+Can implement our nested routes here later:
+
+<div>
+  <Routes>
+    <Route path=.. element=.../>
+    <Route path=.. element=.../>
+  </Routes>
+</div>
+
+
+
+*/
 const VideoPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  /*
   useEffect(() => {
     if (location.pathname == '/portfolio/video'){
       navigate('/portfolio/video/event-highlights');
     }
   }, [navigate, location]);
+  */
 
   return (
     <div className='video-page-wrapper'>
-      <div className='sideline-content'> 
-        <SubNav
-          subNavDescription="Welcome to the videography page, you can view all of my highlighted video projects on the right by scrolling. You can also look into each project by clicking on the button inside the caption. "
-          title="Videography Content"
-          parentLink="video"
-          links={{"Event highlights": "event-highlights", "Promotional material": "promotional-material", "Drone footage": "my-first-highlight-reel" }}
-          className='subnav'
-          initialPage='event highlights'
+        <ContentSidebar 
+        contentDesc='Video content I have created in order to highlight brands, key examples include popular gyms, showcase events and so on' 
+        contentTitle='event-highlights' 
+        videos={{PortfolioReel2: [PortfolioReel, '/portfolio/video/portfolio-reel'], 
+                PortfolioReel: [PortfolioReel, '/portfolio/video/portfolio-reel'], 
+                Header: [Header, '/portfolio/video/header'],
+                Hello: [Header, '/portfolio/video/header'],
+                Hello2: [Header, '/portfolio/video/header']}}/>
+        <ContentSidebar
+        contentDesc="Some more video content for you beautiful people"
+        contentTitle='promotional-material'
+        videos={{}}
         />
-      </div>
-      
-      <div className='page-content-wrapper'>
-        <Routes>
-          <Route path="/promotional-material" element={<ContentSidebar contentTitle ="Video content I have created in order to promote brands, key examples include popular gyms, showcase events and so on" videos={{"2019 | First event | BBJCorporations": [Header, null]}} />} />
-          <Route path="/event-highlights" element={<ContentSidebar contentTitle="Video content I have created in order to promote brands, key examples include popular gyms, showcase events and so on" videos={{"2019 First event BBJCorporations": [PorfolioReel, null], "Atlas Gym": [Header, "/video/links/event-highlights/atlas-gym"]}} />} />
-        </Routes>
-      </div>
+
     </div>
   );
 };
@@ -186,8 +199,10 @@ export default function App() {
               <Route path="/updates" element={<Updates />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/portfolio" element={<Portfolio/>} />
-                <Route path="/portfolio/video/*" element={<VideoPage />} />
-                <Route path="/portfolio/photo/*" element={<PhotoPage />} />
+                <Route path="/portfolio/video" element={<VideoPage />} />
+                  <Route path="/portfolio/video/*" element={<React.Fragment/>} />
+                <Route path="/portfolio/photo" element={<PhotoPage />} />
+                  <Route path="/portfolio/photo/*" element={<React.Fragment/>} />
             </Route>
           </Routes>
         </Suspense>

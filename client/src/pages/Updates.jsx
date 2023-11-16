@@ -28,7 +28,7 @@ const ResultsComponent = (props) => {
   );
 }
 
-const UserPage = () => {
+const UserPage = (props) => {
   const [posts, setPosts] = useState([]);
   //queries can hold sorts, filters and search.
   //data holds search terms.
@@ -47,6 +47,10 @@ const UserPage = () => {
 
   return (
     <div className='user-updates-container'>
+    {props.viewButtons && <div style={{display:'flex', justifyContent:'center', flexDirection:'row', position:'relative', bottom:'0rem', gap:'2rem'}}>
+        <button onClick={() => props.setEditorView(true)} className='editor-view-button'>Editor view</button>
+        <button onClick={() => props.setEditorView(false)} className='editor-view-button'>User view</button>
+      </div>}
     <SearchBarContainer query = {query} setQuery={setQuery} />
     <ResultsComponent posts={posts}/>
     {posts.map((data) => {
@@ -61,7 +65,7 @@ const UserPage = () => {
 /*
 -> Want form with set format, determine format soon.
 */
-const EditorPage = () => { 
+const EditorPage = (props) => { 
   const [validationErrors, setValidationErrors] = useState({});
   const [postData, setPostData] = useState({'content': null, 'title': null, 'tags': []});
   const [buttonColour, setButtonColour] = useState({'clear': 'white', 'add': 'white'});
@@ -81,7 +85,7 @@ const EditorPage = () => {
     tag: yup.string().max(20, "Tag must be less than 20 characters")
   })
 
-  console.log(postData.tags);
+
   const clearTags = () => {
     setPostData(prevData => {
       return {
@@ -219,10 +223,15 @@ const EditorPage = () => {
   }
 
   
+  if (props.editorView) {
 
 
   return (
     <div className='editor-updates-container'>
+      <div style={{display:'flex', justifyContent:'center', flexDirection:'row', position:'relative', bottom:'15rem', gap:'2rem'}}>
+        <button onClick={() => props.setEditorView(true)} className='editor-view-button'>Editor view</button>
+        <button onClick={() => props.setEditorView(false)} className='editor-view-button'>User view</button>
+      </div>
       <div className='editor-create-form-wrapper'>
         <form className='editor-create-form'>
           <p style={{textAlign:'center', position:'relative', bottom:'1rem', fontSize:'2rem', color:'black', fontFamily:'helvetica', fontWeight:'200'}}>HI JACOB, CREATE A NEW POST.</p>
@@ -259,14 +268,22 @@ const EditorPage = () => {
     </div>
   )}
 
+  else {
+    return <UserPage viewButtons={true} setEditorView={props.setEditorView}/>
+  }
+
+
+}
+
 export default function Updates () {
   const { userRole } = useContext(UserRoleContext);
+  const [editorView, setEditorView] = useState(true);
   if (userRole == 'base'){
     return <UserPage />
   }
 
   else if (userRole == 'editor'){
-    return <EditorPage />
+    return <EditorPage editorView={editorView} setEditorView={setEditorView} />
   }
 
   else {

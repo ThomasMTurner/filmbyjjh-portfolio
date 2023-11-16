@@ -1,34 +1,35 @@
 import PorfolioReel from './Components/Videos/portfolio-reel.mp4';
 import Header from './Components/Videos/header.mp4';
 import { useState, useEffect } from 'react';
-import { NavLink, useLocation} from 'react-router-dom';
-import {MdOpenInNew} from 'react-icons/md';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { BsCamera } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
+import ScrollBar from './Components/ScrollBar';
+
+const DescriptionPopUp = (props) => {
+  return (
+      <div className='description-pop-up-wrapper'>
+          <p style={{textDecoration:'underline', textUnderlineOffset:'10px', fontFamily:'helvetica', color:'black', fontWeight:'bold', fontSize:'1.5rem'}}>What's in this project?</p>
+          <p style={{fontFamily:'helvetica', color:'white', fontWeight:'200', position:'relative', bottom:'1.5rem'}}>{props.description}</p>
+      </div>
+  )
+}
 
 
 function VideoContainer (props) {
-  const [buttonColour, setButtonColour] = useState('black')
-  
-  //we will take every caption and when modifying the link for the opener button we will key 
-  //into here for the URL
-  const captionMap = {};
+  const [descriptionIsToggled, setDescriptionIsToggled] = useState(false);
 
-  const handleOpenerClick = () => {
-    if (buttonColour === 'black'){
-      setButtonColour('darkgray')
-    }
-    else {
-
-    }
-  }
 
   const [ref, inView] = useInView({
     threshold: 0.5,
     triggerOnce: true
   })
+
+  const navigate = useNavigate();
+
   
-  return(
+  return (
     <motion.div ref={ref}  animate={{opacity: inView ? 1 : 0, y: inView ? 0 : -80}} viewport={{once:true}} transition={{duration:0.5,  type:'spring'}} className='video-container-1'>
       <video
       src={props.source}
@@ -36,21 +37,16 @@ function VideoContainer (props) {
       width='600'
       height='600'
     >
+    
       </video>
+      <button onMouseEnter={() => setDescriptionIsToggled(true)} onMouseLeave={() => setDescriptionIsToggled(false)} onClick={() => navigate(`/portfolio/video/${props.videoLink}`)} className='video-caption'>
+        <p>View full project.</p>
+      </button>
 
-      <div className='video-container-caption'>
-          <p>{props.caption}</p>
-          <button onMouseEnter = {() => setButtonColour('darkgray')} onMouseLeave = {() => setButtonColour('black')} className='full-opener-button'>
-            <NavLink exact to={props.videoLink || ''} className='video-card-link'>
-              <MdOpenInNew size={35} color={buttonColour} className='full-open-button'/>
-            </NavLink>
-          </button>
-          
-       </div>
-      
-      
+      {descriptionIsToggled && <DescriptionPopUp description="A beautiful display of winery, from the great winesmen of new eve business ventures."/>}
+
+
     </motion.div>
-
   )
 }
 
@@ -64,22 +60,27 @@ function PhotosContainer(props){
   )
 }
 
+
+//1st idea: 2 videos per row
+
+//
 function VideosContainer(props) {
-    return (
-      <div className="content-container">
+  return (
+    <div className="content-container">
+      <div className='video-row'>
         {props.videos &&
-          Object.entries(props.videos).map(([caption, source]) => (
-            <VideoContainer
-                source={source[0]}
-                videoLink={source[1]}
-                caption={caption}
-                key={caption}
-            />
-           
+          Object.entries(props.videos).map(([name, [source, videoLink]], index) => (
+            <div key={index} className='video-item'>
+              <VideoContainer
+                 source={source}
+                 videoLink={videoLink}
+              />
+            </div>
           ))}
-      </div>
-    );
-  }
+        </div>
+    </div>
+  );
+}
   
   
 
@@ -89,28 +90,48 @@ export default function ContentSidebar(props) {
     //const displaysPhotos = (!displaysVideos);
     
     const urlMap = {
-      'event-highlights': 'Event highlights, a stellar collection of reels from my events',
-      'promotional-material': 'Promotional material, increasing the noteriety of client brands',
+      'event-highlights': 'Event highlights, a stellar collection of reels from my events.',
+      'promotional-material': 'Promotional material, increasing the noteriety of client brands.',
       'wedding-photography': 'Wedding photography, elegant portraits of you and your loved ones on this special day'
     }
     
+    const links = Object.values(props.videos).map(i => i[1]);
+    
+    /*
     const location = useLocation();
-  
     useEffect(() => {
       const currentPageName = window.location.pathname.split('/').pop();
       if (currentPageName != "photo"){
-      setCurrentPage(urlMap[currentPageName]);
+        setCurrentPage(urlMap[currentPageName]);
       }
     }, [location]);
+    */
+
+    useEffect(() => {
+      if (currentPage == null){
+        setCurrentPage(urlMap[props.contentTitle]);
+      };
+    }, [])
     
   
     return (
       <div className='content-sidebar'>
-        <p className='content-page-title'>{(currentPage)  || 'Sorry, no content to display at the moment' }</p>
+        <div>
+          <div style={{display:'flex', flexDirection:'row', gap:'0.5rem', justifyContent:'center', alignItems:'center'}}>
+            <BsCamera size={15} color={'silver'}/>
+            <p style={{color:'darkgray', fontWeight:'200'}}>PRODUCED BY JACOB HOLLIS.</p>
+          </div>
+          <p className='content-page-title'>{(currentPage)  || 'Sorry, no content to display at the moment' }</p>
+          <hr style={{width:"100%", border:'1px solid black', position:'relative', top:'1.5rem'}}/>
+        </div>
         <div className='content-sidebar-title'> 
-          <h1 style={{color:'black', width:'40rem', fontFamily:'helvetica', fontWeight:'100', fontSize:'1.2rem'}}>{props.contentTitle}</h1>
+          <h1 style={{fontSize:'1rem', fontFamily:'helvetica', fontWeight:'200', width:'40rem'}}>{props.contentDesc}</h1>
+          <hr style={{width:"100%", border:'0.7px solid black'}}/>
+          <p style={{fontFamily:'helvetica', fontWeight:'200', color:'darkslategray'}}>Projects in this section:</p>
+          <ScrollBar links={links}/>
         </div>
         {displaysVideos ? <VideosContainer videos={props.videos} /> : <PhotosContainer photos={props.photos} />}
+      
   
       </div>
     );

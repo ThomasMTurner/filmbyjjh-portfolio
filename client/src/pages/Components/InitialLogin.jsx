@@ -127,7 +127,7 @@ export const InitialLoginContainer = ((props) => {
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0}} transition={{ duration: 1.2 }} viewport={{ once: true }}>
           <div className='initial-login-container' id='initial-login-container'>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', position: 'relative', bottom: '3rem' }}>
-                <p style={{ fontSize: '2.5rem', fontFamily: 'helvetica', fontWeight: '300', color: 'black', position:'relative', bottom:'2rem' }}> Welcome to <span style={{ color:'silver' }}>FILM.BY.JJH</span>. </p>
+                <p style={{ fontSize: '2.5rem', fontFamily: 'helvetica', fontWeight: '300', color: 'black', position:'relative', bottom:'2rem' }}> Welcome to <span style={{ color:'white', textDecoration: 'underline' }}>FILM BY JJH</span>. </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                   <button className='initial-login-link' onClick={() => setAdminLogin(true)}>
                     Hello, I am the editor

@@ -50,7 +50,7 @@ const PortfolioCard = (props) => {
   };
 export default function Portfolio() {
     return(
-        <div style={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', width:'100%', gap:'5rem', minHeight:'75rem', position:'relative', backgroundColor:'white'}}>
+        <div style={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', width:'100%', gap:'5rem', minHeight:'75rem', position:'relative', backgroundColor:'darkgray'}}>
             <div style={{display:'flex', flexDirection:'row', justifyContent:'center', alignItems:'center', width:'100%', gap:'5rem'}}>
                 <PortfolioCard title="Photography" desc="Click here to see all of my latest photography shoots. I provide these services both professionally and freelance, presenting new products, venues and concepts to their respective " />
                 <PortfolioCard title="Videography" desc="Click here to get all of my latest shoots with companies across numerous industries including healthcare and construction" />
