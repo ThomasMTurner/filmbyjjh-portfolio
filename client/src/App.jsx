@@ -34,19 +34,8 @@ Can implement our nested routes here later:
 
 */
 const VideoPage = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  /*
-  useEffect(() => {
-    if (location.pathname == '/portfolio/video'){
-      navigate('/portfolio/video/event-highlights');
-    }
-  }, [navigate, location]);
-  */
-
   return (
-    <div className='video-page-wrapper'>
+    <div className='content-page-wrapper video-page'>
         <ContentSidebar 
         contentDesc='Video content I have created in order to highlight brands, key examples include popular gyms, showcase events and so on' 
         contentTitle='event-highlights' 
@@ -60,41 +49,17 @@ const VideoPage = () => {
         contentTitle='promotional-material'
         videos={{}}
         />
-
     </div>
   );
 };
 
 const PhotoPage = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-  
-    useEffect(() => {
-      if (location.pathname == '/portfolio/photo'){
-        navigate('/portfolio/photo/wedding-photography');
-      }
-    }, [navigate, location]);
-  
     return (
-      <div className='photo-page-wrapper'>
-        <div className='sideline-content'>
-          <SubNav
-            subNavDescription="Welcome to the photography page, you can view all of my photos on the right by scrolling. You can also look into each photo by clicking on the button inside the caption. "
-            style={{
-              position: 'relative',
-              bottom:"40rem"
-            }}
-            title="Photography Content"
-            parentLink="photo"
-            links={{"Wedding photography": "wedding-photography"}}
-            initialPage = "wedding photography"
-          />
-        </div>
-        <div className='page-content-wrapper'>
-          <Routes>
-            <Route path="/wedding-photography" element={<ContentSidebar contentTitle="Selection of photographs taken for weddings and wedding related events, also includes stags and hens." photos={{}}/>} />
-          </Routes>
-        </div>
+      <div className='content-page-wrapper photo-page'>
+          <ContentSidebar 
+          contentDesc='Photo content I have created in order to highlight brands, key examples include popular gyms, showcase events and so on' 
+          contentTitle='wedding-photography' 
+          photos={{}}/>
       </div>
     );
   

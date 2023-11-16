@@ -10,15 +10,46 @@ import ScrollBar from './Components/ScrollBar';
 const DescriptionPopUp = (props) => {
   return (
       <div className='description-pop-up-wrapper'>
-          <p style={{textDecoration:'underline', textUnderlineOffset:'10px', fontFamily:'helvetica', color:'black', fontWeight:'bold', fontSize:'1.5rem'}}>What's in this project?</p>
-          <p style={{fontFamily:'helvetica', color:'white', fontWeight:'200', position:'relative', bottom:'1.5rem'}}>{props.description}</p>
+          <p style={{textDecoration:'underline', textUnderlineOffset:'10px', fontFamily:'helvetica', color:'black', fontWeight:'bold', fontSize:'1rem'}}>What's in this project?</p>
+          <p style={{fontFamily:'helvetica', color:'white', fontWeight:'200', position:'relative', bottom:'0.7rem', fontSize:'0.7rem'}}>{props.description}</p>
       </div>
   )
 }
 
+function PhotoContainer (props) {
+  const [descriptionIsToggled, setDescriptionIsToggled] = useState(false);
+
+  const [ref, inView] = useInView({
+    threshold: 0.5,
+    triggerOnce: true
+  })
+
+  const navigate = useNavigate();
+
+  
+  return (
+    <motion.div ref={ref}  animate={{opacity: inView ? 1 : 0, y: inView ? 0 : -80}} viewport={{once:true}} transition={{duration:0.5,  type:'spring'}} className='video-container-1'>
+      <img
+      src={props.source}
+      width='600'
+      height='600'
+    >
+    
+      </img>
+      <button onMouseEnter={() => setDescriptionIsToggled(true)} onMouseLeave={() => setDescriptionIsToggled(false)} onClick={() => navigate(`/portfolio/photo/${props.link}`)} className='video-caption'>
+        <p>View full project.</p>
+      </button>
+
+      {descriptionIsToggled && <DescriptionPopUp description="A beautiful display of winery, from the great winesmen of new eve business ventures."/>}
+
+
+    </motion.div>
+  ) 
+}
 
 function VideoContainer (props) {
   const [descriptionIsToggled, setDescriptionIsToggled] = useState(false);
+
 
 
   const [ref, inView] = useInView({
@@ -39,7 +70,7 @@ function VideoContainer (props) {
     >
     
       </video>
-      <button onMouseEnter={() => setDescriptionIsToggled(true)} onMouseLeave={() => setDescriptionIsToggled(false)} onClick={() => navigate(`/portfolio/video/${props.videoLink}`)} className='video-caption'>
+      <button onMouseEnter={() => setDescriptionIsToggled(true)} onMouseLeave={() => setDescriptionIsToggled(false)} onClick={() => navigate(`/portfolio/video/${props.link}`)} className='video-caption'>
         <p>View full project.</p>
       </button>
 
@@ -50,31 +81,19 @@ function VideoContainer (props) {
   )
 }
 
-function PhotosContainer(props){
-  return (
-    <div className='content-container'>
-      {props.photos && Object.entries(props.photos).map(([caption, source]) => (
-        <img size={'300'} src={source} alt={caption} key={caption} />
-      ))}
-    </div>
-  )
-}
 
 
 //1st idea: 2 videos per row
 
 //
-function VideosContainer(props) {
+function ContentContainer(props) {
   return (
     <div className="content-container">
       <div className='video-row'>
         {props.videos &&
-          Object.entries(props.videos).map(([name, [source, videoLink]], index) => (
+          Object.entries(props.videos).map(([name, [source, link]], index) => (
             <div key={index} className='video-item'>
-              <VideoContainer
-                 source={source}
-                 videoLink={videoLink}
-              />
+              {props.displaysVideos ? <VideoContainer source = {source} link = {link} /> : <PhotoContainer source = {source} link = {link} />}
             </div>
           ))}
         </div>
@@ -87,7 +106,7 @@ function VideosContainer(props) {
 export default function ContentSidebar(props) {
     const [currentPage, setCurrentPage] = useState(null);
     const displaysVideos = Boolean(props.videos || false);
-    //const displaysPhotos = (!displaysVideos);
+    let links = null;
     
     const urlMap = {
       'event-highlights': 'Event highlights, a stellar collection of reels from my events.',
@@ -95,17 +114,13 @@ export default function ContentSidebar(props) {
       'wedding-photography': 'Wedding photography, elegant portraits of you and your loved ones on this special day'
     }
     
-    const links = Object.values(props.videos).map(i => i[1]);
+    if (displaysVideos) {
+      links = Object.values(props.videos).map(i => i[1]);
+    }
     
-    /*
-    const location = useLocation();
-    useEffect(() => {
-      const currentPageName = window.location.pathname.split('/').pop();
-      if (currentPageName != "photo"){
-        setCurrentPage(urlMap[currentPageName]);
-      }
-    }, [location]);
-    */
+    else {
+      links = Object.values(props.photos).map(i => i[1]);
+    }
 
     useEffect(() => {
       if (currentPage == null){
@@ -130,7 +145,7 @@ export default function ContentSidebar(props) {
           <p style={{fontFamily:'helvetica', fontWeight:'200', color:'darkslategray'}}>Projects in this section:</p>
           <ScrollBar links={links}/>
         </div>
-        {displaysVideos ? <VideosContainer videos={props.videos} /> : <PhotosContainer photos={props.photos} />}
+        {displaysVideos ? <ContentContainer videos={props.videos} displaysVideos = {displaysVideos}/> : <ContentContainer photos={props.photos} displaysVideos = {displaysVideos}  />}
       
   
       </div>

@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
-import { BiRightArrow, BiLeftArrow } from 'react-icons/bi';
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 
 
 
@@ -51,13 +51,13 @@ export default function ScrollBar (props) {
 
     return (
         <div className='scroll-bar-wrapper'>
-            <button onClick={() => setOffsetLeft()}><BiLeftArrow size={30} color='black'/></button>
+            <button onClick={() => setOffsetLeft()}><FaArrowLeft size={30} color='black'/></button>
             {props.links.slice(offsetIndex, offsetIndex + 3).map((link, index) => {
                 return <ScrollLink key={index} link={link}/>
             })
 
             }
-            <button onClick={() => setOffsetRight()}><BiRightArrow size={30} color='black'/></button>
+            <button onClick={() => setOffsetRight()}><FaArrowRight size={30} color='black'/></button>
         </div>
     )
 }
